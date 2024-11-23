@@ -12,10 +12,18 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
-    
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis
+    volumes:
+      - ./redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - 6379:6379
   web:
     build: .
     command: "./bin/rails server"
+    restart: always
     env_file:
       - .env
     volumes:
@@ -24,3 +32,14 @@ services:
       - 3000:3000
     depends_on:
       - db
+      - redis
+      - sidekiq
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    env_file:
+      - .env
+    volumes:
+      - ./app_storage:/rails/storage
+    depends_on:
+      - redis
