@@ -16,4 +16,7 @@ Rails.application.routes.draw do
       resources :gps, only: [ :create ]
     end
   end
+
+  require "sidekiq/web"
+  mount Sidekiq::Web => "/sidekiq"
 end
