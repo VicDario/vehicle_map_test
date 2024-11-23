@@ -1,14 +1,7 @@
 class Api::V1::GpsController < ApplicationController
     def create
-        vehicle = Vehicle.find_or_create_by(identifier: gps_params[:vehicle_identifier])
-
-        waypoint = vehicle.waypoints.create!(
-            latitude: gps_params[:latitude],
-            longitude: gps_params[:longitude],
-            sent_at: gps_params[:sent_at]
-        )
-
-        render json: waypoint, status: :created
+        SaveGpsWaypointJob.perform_async(gps_params.to_json)
+        render json: { message: "Waypoint creation in progress" }, status: :accepted
     end
 
     private
