@@ -1,4 +1,4 @@
-require 'json'
+require "json"
 
 class SaveGpsWaypointJob
     include Sidekiq::Job

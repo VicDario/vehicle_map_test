@@ -39,8 +39,8 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-# Add sidekiq for job background processing 
-gem 'sidekiq'
+# Add sidekiq for job background processing
+gem "sidekiq"
 # Redis for sidekiq
 gem "redis", "~> 5.3"
 
