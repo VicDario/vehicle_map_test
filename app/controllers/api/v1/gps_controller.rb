@@ -4,6 +4,11 @@ class Api::V1::GpsController < ApplicationController
         render json: { message: "Waypoint creation in progress" }, status: :accepted
     end
 
+    def latest_waypoint_of_each_vehicle
+        waypoints = GetLatestVehiclesWaypointUseCase.execute()
+        render json: waypoints, status: :ok
+    end
+
     private
     def gps_params
         params.permit(:latitude, :longitude, :vehicle_identifier, :sent_at)
