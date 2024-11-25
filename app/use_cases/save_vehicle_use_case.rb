@@ -10,5 +10,5 @@ class SaveVehicleUseCase
 
     def self.valid_identifier?(vehicle_identifier)
         vehicle_identifier.is_a?(String) && vehicle_identifier.length > 3 && vehicle_identifier.length < 10
-      end
+    end
 end
