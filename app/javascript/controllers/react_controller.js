@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import Show from "../views/show.view";
 
@@ -7,6 +7,10 @@ import Show from "../views/show.view";
 export default class extends Controller {
   connect() {
     const app = document.getElementById("app");
-    createRoot(app).render(<Show />);
+    createRoot(app).render(
+      <StrictMode>
+        <Show />
+      </StrictMode>
+    );
   }
 }
