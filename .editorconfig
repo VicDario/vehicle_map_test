@@ -10,4 +10,9 @@ insert_final_newline = true
 [*.{rb, js}]
 charset = utf-8
 indent_style = space
+
+[*.{rb}]
 indent_size = 4
+
+[*.{js}]
+indent_size = 2
