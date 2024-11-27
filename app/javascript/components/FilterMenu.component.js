@@ -41,4 +41,4 @@ export function FilterMenu({ onSubmit, currentFilter, onClear }) {
       </div>
     </form>
   );
-};
+}

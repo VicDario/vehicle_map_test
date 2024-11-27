@@ -19,7 +19,10 @@ export default function Show() {
 
   const handleWindowInfoClose = useCallback(() => setSelectedMarker(null), []);
 
-  const handleMarkerClick = useCallback((market) => setSelectedMarker(market), []);
+  const handleMarkerClick = useCallback(
+    (market) => setSelectedMarker(market),
+    []
+  );
 
   const onSubmit = useCallback((filter) => {
     const filteredMarkers = markersMemory.current.filter((marker) =>
@@ -37,7 +40,11 @@ export default function Show() {
   return (
     <main className="d-flex justify-content-center align-items-center flex-column">
       <h1>Vehicle Map Test</h1>
-      <FilterMenu onSubmit={onSubmit} currentFilter={currentFilter} onClear={cleanFilter} />
+      <FilterMenu
+        onSubmit={onSubmit}
+        currentFilter={currentFilter}
+        onClear={cleanFilter}
+      />
       <MapContainer
         markers={markers}
         selectedMarker={selectedMarker}
