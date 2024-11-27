@@ -1,32 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
-
-const API_KEY = "AIzaSyAOENdP8nSgl08r3Xo6ik1pZ1U3_GjdSi4";
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import { FilterMenu } from "../components/FilterMenu.component";
+import { MapContainer } from "../components/MapContainer.component";
 
 export default function Show() {
-  const [positions, setPositions] = useState([]);
+  const [markers, setMarkers] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [currentFilter, setCurrentFilter] = useState("");
+  const markersMemory = useRef([]);
+
   useEffect(() => {
     fetch("/api/v1/gps/latest")
       .then((response) => response.json())
-      .then(setPositions);
+      .then((markersData) => {
+        setMarkers(markersData);
+        markersMemory.current = markersData;
+      });
   }, []);
+
+  const handleWindowInfoClose = useCallback(() => setSelectedMarker(null), []);
+
+  const handleMarkerClick = useCallback((market) => setSelectedMarker(market), []);
+
+  const onSubmit = useCallback((filter) => {
+    const filteredMarkers = markersMemory.current.filter((marker) =>
+      marker.vehicle_identifier.includes(filter)
+    );
+    setMarkers(filteredMarkers);
+    setCurrentFilter(filter);
+  }, []);
+
+  const cleanFilter = useCallback(() => {
+    setMarkers(markersMemory.current);
+    setCurrentFilter("");
+  }, []);
+
   return (
-    <APIProvider apiKey={API_KEY}>
-      <Map
-        style={{ width: "100vw", height: "100vh" }}
-        defaultCenter={{ lat: 22.54992, lng: 0 }}
-        defaultZoom={3}
-        gestureHandling={"greedy"}
-        disableDefaultUI={true}
-      >
-        {positions.length &&
-          positions.map((position) => (
-            <Marker
-              key={position.vehicle_identifier}
-              position={{ lat: position.latitude, lng: position.longitude }}
-            />
-          ))}
-      </Map>
-    </APIProvider>
+    <main className="d-flex justify-content-center align-items-center flex-column">
+      <h1>Vehicle Map Test</h1>
+      <FilterMenu onSubmit={onSubmit} currentFilter={currentFilter} onClear={cleanFilter} />
+      <MapContainer
+        markers={markers}
+        selectedMarker={selectedMarker}
+        onMarkerClick={handleMarkerClick}
+        onClose={handleWindowInfoClose}
+      />
+    </main>
   );
 }
