@@ -1,3 +1,9 @@
+<script>
+  window.ENV = {
+    API_KEY: "<%= ENV['GOOGLE_MAPS_API_KEY'] %>"
+  };
+</script>
+
 <%= content_tag(:div, "", id:"app", data: {
     controller:"react"
 }) %>
