@@ -5,7 +5,7 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version: 3.3.6
 
 * System dependencies
 
@@ -61,3 +61,35 @@ If no vehicle exists with that identifier, create it.
 - Redis
 - Docker && Docker-Compose
 - Google Maps API
+
+# Instructions
+1. Run
+```bash
+bundle install
+yarn install
+```
+2. Generate key
+```bash
+VISUAL="code --wait" bin/rails credentials:edit
+```
+This will generate a key located in `config/master.key`
+2. Create an .env file with
+```bash
+POSTGRES_HOST=db
+POSTGRES_DB=vehicle_map
+POSTGRES_USER=user
+POSTGRES_PASSWORD=strongpassword
+RAILS_ENV=production
+REDIS_URL=redis://redis:6379/0
+SECRET_KEY_BASE="RAILS KEY GENERATED IN STEP 2"
+GOOGLE_MAPS_API_KEY="GOOGLE API KEY"
+```
+3. Run docker compose
+```bash
+docker compose up -d
+```
+
+# Features
+
+- Endpoint POST `/api/v1/gps` to save waypoints
+- Endpoint HTML `/show` to see waypoints on the map
