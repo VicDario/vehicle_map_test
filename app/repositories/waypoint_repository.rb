@@ -4,7 +4,8 @@ class WaypointRepository
     end
 
     def self.get_latest_waypoint_of_each_vehicle
-        waypoints = Waypoint.select("DISTINCT ON (vehicle_id) vehicle_id as vehicle_identifier, longitude, latitude, sent_at")
+        waypoints = Waypoint.select("DISTINCT ON (vehicle_id) vehicle_id, waypoints.longitude, waypoints.latitude, waypoints.sent_at, vehicles.identifier as vehicle_identifier")
+                .joins("INNER JOIN vehicles ON vehicles.id = waypoints.vehicle_id")
                 .order(:vehicle_id, created_at: :desc)
         waypoints.map do |waypoint|
             waypoint.attributes.except("id")
